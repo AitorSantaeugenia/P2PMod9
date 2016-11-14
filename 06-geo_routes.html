@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>GMaps.js &mdash; Geolocation</title>
+  <script type="text/javascript" src="zepto.min.js"></script>
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+  <script type="text/javascript" src="gmaps.js"></script>
+  <link rel="stylesheet" type="text/css" href="mypath.css" />
+  <script type="text/javascript">
+			//Variables utilizadas
+			var map, lat, lng, latDefecto = 39.874881, lngDefecto = 4.291749;
+			
+			//Variable sizeLatitude
+			var sizeLatitude = new Array();
+
+			//Funcion añadir LOCALSTORAGE ruta
+			function addLocalStorageRuta(lat, long){
+			
+				//Guardamos valor al localstorage
+				sizeLatitude.push({lat: lat, lng: long});
+				localStorage.rutaString = JSON.stringify(sizeLatitude);
+			}
+
+			if ((localStorage.rutaString!==undefined)&&(localStorage.rutaString.length>0)){
+				try{
+					sizeLatitude=JSON.parse(localStorage.rutaString);
+				}catch (e){
+					localStorage.rutaString = "";
+				};
+			}
+
+			var aux;
+			$(function(){
+			//FUNCION BORRAR RUTA
+				$("#borrar").on("click", function(){
+					localStorage.rutaString = "";
+					map.removeMarkers();
+					map.cleanRoute();
+					sizeLatitude.length = 0;
+
+					geolocalizar();
+			});//FIN BORRAR RUTA
+				
+			//FUNCION COMPACTAR RUTA
+				$("#compactar").on("click", function(){
+
+					localStorage.rutaString = "";
+					map.removeMarkers();
+					map.cleanRoute();
+
+					sizeLatitude[1] = sizeLatitude[sizeLatitude.length - 1];
+					sizeLatitude.splice(2, sizeLatitude.length - 2);
+					localStorage.rutaString = JSON.stringify(sizeLatitude);
+
+					drawRute();
+			});//FIN COMPACTAR RUTA
+				
+			//FUNCION ENLAZAR LONG LAT
+				function enlazarMarcadorLatLng(latDest, lngDest){
+					// muestra ruta entre marcas anteriores y actuales
+					map.drawRoute({
+						origin: [lat, lng], // origen en coordenadas anteriores
+						// destino en coordenadas del click o toque actual
+						destination: [latDest, lngDest],
+						travelMode: 'driving',
+						strokeColor: '#000000',
+						strokeOpacity: 0.6,
+						strokeWeight: 5
+					});
+
+					lat = latDest;   // guarda coords para marca siguiente
+					lng = lngDest;
+
+					map.addMarker({lat: lat, lng: lng});  // pone marcador en mapa
+			}//FIN FUNCION ENLAZAR LONG LAT
+
+			//FUNCION ENLAZAR MARCADOR
+				function enlazarMarcador(e){
+					enlazarMarcadorLatLng(e.latLng.lat(), e.latLng.lng());
+					addLocalStorageRuta(lat, lng);
+			};//FIN FUNCION ENLAZAR MARCADOR
+
+			//FUNCION LOCALIZAR
+				function geolocalizar(){
+					lat=latDefecto;
+					lng=lngDefecto;
+					
+					GMaps.geolocate({
+						success: function(position){
+							lat = position.coords.latitude;  // guarda coords en lat y lng
+							lng = position.coords.longitude;
+						},
+						error: function(error){
+							alert('Geolocalización falla: ' + error.message);
+						},
+						not_supported: function(){
+							alert("Su navegador no soporta geolocalización");
+						},
+						always: function(){
+							map.setCenter(lat, lng); //centra mapa  en coords [lat, lng]
+							map.addMarker({lat: lat, lng: lng});  // marcador en [lat, lng]
+							//I HATE THE FITZOOM, pero és más funcional
+							map.fitZoom();
+							addLocalStorageRuta(lat, lng);
+						},
+					});
+			};//FIN FUNCION LOCALIZAR
+
+			//FUNCION DRAWRUTE
+				function drawRute(){
+					lat = sizeLatitude[0].lat;
+					lng = sizeLatitude[0].lng;
+
+					map.setCenter(lat, lng); //centra mapa  en coords [lat, lng]
+					map.addMarker({lat: sizeLatitude[0].lat, lng: sizeLatitude[0].lng});
+
+
+					for (var i = 1; i < sizeLatitude.length; i++){
+						enlazarMarcadorLatLng(sizeLatitude[i].lat, sizeLatitude[i].lng);
+					};
+					//I HATE THE FITZOOM, pero és más funcional
+					map.fitZoom();
+			}//FIN FUNCION DRAWRUTE
+
+
+				map = new GMaps({	// muestra mapa centrado en coords [lat, lng]
+					el: '#map',
+					lat: latDefecto,
+					lng: lngDefecto,
+					click: enlazarMarcador,
+					tap: enlazarMarcador,
+				});
+				if (sizeLatitude.length > 0){
+					drawRute();
+				}else{
+					geolocalizar();
+				}
+			});
+</script>
+</head>
+<body>
+  <h1>Geolocalización</h1>
+  
+	<!-- DONDE AÑADIMOS LOS BOTONES PARA EL EJERCICIO -->
+		<div id="botones">
+			<button id="borrar" class="button1"> Borrar ruta </button>
+			<button id="compactar" class="button1"> Compactar </button>
+	  
+		</div>
+	<!-- FIN BOTONES -->
+	
+  <div id="map"></div>
+</body>
+</html>

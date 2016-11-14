@@ -8,6 +8,6 @@ Google maps (Gmaps API): Añadir rutas, guardarlas usando localstorage, añadir 
 <strong>"Compactar" button will erase all marks, showing origin and destiny (latitude and longitude using localstorage):<br></strong>
 ![Alt text](https://cloud.githubusercontent.com/assets/14861253/20276419/70edf770-aa9c-11e6-9c4f-cedb69ea85b9.png)<br>
 
-<strong>"Borrar ruta" button will erase all marks, showing just the origin where you are (also, it will delete longitude and latitude parameters from the localstorage).</strong><br>
+<strong>"Borrar ruta" button will erase all marks, showing just the origin where you are (also, will delete longitude and latitude parameters from the localstorage).</strong><br>
 ![Alt text](https://cloud.githubusercontent.com/assets/14861253/20276426/7879f1ce-aa9c-11e6-8b22-599a1e1aa23e.png)<br>
 

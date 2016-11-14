@@ -6,7 +6,7 @@ Google maps (Gmaps API): Añadir rutas, guardarlas usando localstorage, añadir 
 - Puedes crear rutas clicando con el ratón (múltiples rutas).
 - El botón "Compactar" se centrará en la ruta inicio y destino (borrando las que haya por el camino, o las anteriores al destino). Al mismo tiempo guardará los valores en localStorage.
 - El botón "Borrar ruta" borrará los valores y mostrará el origen de Gmaps (default). Al mismo tiempo borrará de localStorage los parametros de longitud y latitud que guardaban la ruta en compactar.
-<br>
+<br><br>
 [EN]<br>
 <strong>Creating a route with a click (multiple marks for multiple clicks):<br></strong>
 ![Alt text](https://cloud.githubusercontent.com/assets/14861253/20276300/f6176608-aa9b-11e6-8e6c-b87888b8fd58.png)<br><br>

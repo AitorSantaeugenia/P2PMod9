@@ -3,4 +3,7 @@ Google Maps (Gmaps API): How to create routes, save using localstorage, add mark
 Google maps (Gmaps API): Añadir rutas, guardarlas usando localstorage, añadir marcas, etc.<br><br>
 
 Creating a route with a click (multiple marks for multiple clicks):<br>
-![Alt text](https://cloud.githubusercontent.com/assets/14861253/20276300/f6176608-aa9b-11e6-8e6c-b87888b8fd58.png)
+![Alt text](https://cloud.githubusercontent.com/assets/14861253/20276300/f6176608-aa9b-11e6-8e6c-b87888b8fd58.png)<br>
+
+"Compactar" button will erase all marks, showing origin and destiny:<br>
+![Alt text](https://cloud.githubusercontent.com/assets/14861253/20276419/70edf770-aa9c-11e6-9c4f-cedb69ea85b9.png)<br>
